@@ -1,0 +1,49 @@
+package com.springpj.heroescontentcreator.model.version;
+
+import java.util.Date;
+
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import com.springpj.heroescontentcreator.model.Origin;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "ORIGIN_VERSION")
+@org.hibernate.annotations.Immutable
+public class OriginVersion {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "VERSION", nullable = false, unique = true)
+	private Long version;
+	
+	@NotBlank
+	@Column(name = "NAME", nullable = false, unique = true)
+	private String name;
+	@Column(name = "DESCRIPTION")
+	private String description;
+	
+	@ManyToOne
+    @JoinColumn(name = "ORIGIN_ID", referencedColumnName = "ID", nullable = false)
+	@NotNull
+	private Origin origin;
+	
+	@CreatedDate
+	@Column(name = "DATE_CREATED")
+	private Date dateCreated;
+	
+
+}
