@@ -2,7 +2,9 @@ package com.springpj.heroescontentcreator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +23,20 @@ public class OriginController {
 		this.originService = originService;
 	}
 	
-	@PostMapping("save")
+	@GetMapping("{id}")
+	public OriginDto findById(@PathVariable Long id) {
+		return originService.findById(id);
+	}
+	
+	
+	@PostMapping("add")
 	public OriginDto save(@RequestBody OriginDto dto) {
+		return originService.save(dto);
+	}
+	
+	@PutMapping("{id}/update")
+	public OriginDto update(@RequestBody OriginDto dto, @PathVariable Long id) {
+		dto.setId(id);
 		return originService.save(dto);
 	}
 	

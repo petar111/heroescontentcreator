@@ -2,11 +2,13 @@ package com.springpj.heroescontentcreator.model.version;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.springpj.heroescontentcreator.model.Origin;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,9 +29,6 @@ public class OriginVersion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "VERSION", nullable = false, unique = true)
-	private Long version;
-	
 	@NotBlank
 	@Column(name = "NAME", nullable = false, unique = true)
 	private String name;
@@ -41,7 +40,7 @@ public class OriginVersion {
 	@NotNull
 	private Origin origin;
 	
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "DATE_CREATED")
 	private Date dateCreated;
 
@@ -51,14 +50,6 @@ public class OriginVersion {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
 	}
 
 	public String getName() {

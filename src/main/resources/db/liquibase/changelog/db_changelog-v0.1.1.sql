@@ -25,3 +25,6 @@ alter table if exists origin_version
    add constraint FK1_ORIGIN 
    foreign key (origin_id) 
    references origin;
+   
+ --changeset petar:3
+ alter table origin_version drop column version;

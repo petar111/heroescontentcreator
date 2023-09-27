@@ -6,4 +6,6 @@ public interface OriginService {
 	
 	OriginDto save(OriginDto dto);
 
+	OriginDto findById(Long id);
+
 }
