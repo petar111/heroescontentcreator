@@ -1,37 +1,16 @@
-package com.springpj.heroescontentcreator.model;
+package com.springpj.heroescontentcreator.model.dto;
 
 import java.util.Date;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+public class OriginDto {
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-
-@Entity
-@Table(name = "ORIGIN")
-public class Origin {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
-	@Column(name = "NAME", nullable = false, unique = true)
+
 	private String name;
-	@Column(name = "DESCRIPTION")
 	private String description;
 	
-	@CreationTimestamp
-	@Column(name = "DATE_CREATED")
 	private Date dateCreated;
-	@UpdateTimestamp
-	@Column(name = "DATE_LAST_UPDATED")
 	private Date dateLastUpdated;
 	
 	
@@ -65,5 +44,5 @@ public class Origin {
 	public void setDateLastUpdated(Date dateLastUpdated) {
 		this.dateLastUpdated = dateLastUpdated;
 	}
-	
+
 }
