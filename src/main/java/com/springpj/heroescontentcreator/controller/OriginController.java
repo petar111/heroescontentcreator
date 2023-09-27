@@ -1,5 +1,7 @@
 package com.springpj.heroescontentcreator.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,8 @@ import com.springpj.heroescontentcreator.service.OriginService;
 @RequestMapping("origin")
 public class OriginController {
 	
+	private static final Logger log = LoggerFactory.getLogger(OriginController.class);
+	
 	private final OriginService originService;
 	
 	@Autowired
@@ -25,7 +29,11 @@ public class OriginController {
 	
 	@GetMapping("{id}")
 	public OriginDto findById(@PathVariable Long id) {
-		return originService.findById(id);
+		log.info("Finding by id:" + id + " - START");
+		OriginDto origin = originService.findById(id);
+		log.info("Finding by id:" + id + " - END");
+		return origin;
+		
 	}
 	
 	
