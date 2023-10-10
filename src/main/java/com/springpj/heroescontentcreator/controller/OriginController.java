@@ -3,6 +3,8 @@ package com.springpj.heroescontentcreator.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +24,13 @@ public class OriginController {
 	
 	private final OriginService originService;
 	
+	private final MessageSource messageSoruce;
+	
 	@Autowired
-	public OriginController(OriginService originService) {
+	public OriginController(OriginService originService,
+			MessageSource messageSource) {
 		this.originService = originService;
+		this.messageSoruce = messageSource;
 	}
 	
 	@GetMapping("{id}")
@@ -34,6 +40,11 @@ public class OriginController {
 		log.info("Finding by id:" + id + " - END");
 		return origin;
 		
+	}
+	
+	@GetMapping("metadata/title")
+	public String getTitle() {
+		return messageSoruce.getMessage("model.origin.title", null, LocaleContextHolder.getLocale());
 	}
 	
 	
