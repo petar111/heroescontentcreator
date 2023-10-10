@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +37,20 @@ public class OriginController {
 	}
 	
 	@GetMapping("{id}")
-	public OriginDto findById(@PathVariable Long id) {
+	public EntityModel<OriginDto> findById(@PathVariable Long id) {
 		log.info("Finding by id:" + id + " - START");
 		OriginDto origin = originService.findById(id);
 		log.info("Finding by id:" + id + " - END");
-		return origin;
+		
+		EntityModel<OriginDto> originModel = EntityModel.of(origin);
+		
+		Link selfLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(this.getClass())
+						.findById(origin.getId())).withRel("_self");
+		
+		originModel.add(selfLink);
+		
+		return originModel;
 		
 	}
 	
