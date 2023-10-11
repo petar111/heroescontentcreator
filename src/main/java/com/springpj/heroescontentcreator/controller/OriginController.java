@@ -1,5 +1,7 @@
 package com.springpj.heroescontentcreator.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springpj.heroescontentcreator.model.dto.OriginDto;
+import com.springpj.heroescontentcreator.model.dto.OriginVersionDto;
 import com.springpj.heroescontentcreator.service.OriginService;
 
 @RestController
@@ -51,6 +54,15 @@ public class OriginController {
 		originModel.add(selfLink);
 		
 		return originModel;
+		
+	}
+	
+	@GetMapping("{id}/versions")
+	public List<OriginVersionDto> findAllVersionsById(@PathVariable Long id) {
+		
+		List<OriginVersionDto> versions = originService.findAllVersionsById(id);
+		
+		return versions;
 		
 	}
 	

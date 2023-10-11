@@ -1,4 +1,4 @@
-package com.springpj.heroescontentcreator.model.version;
+package com.springpj.heroescontentcreator.model.dto;
 
 import java.util.Date;
 
@@ -8,7 +8,6 @@ import com.springpj.heroescontentcreator.model.Origin;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,28 +17,15 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "ORIGIN_VERSION")
-@org.hibernate.annotations.Immutable
-public class OriginVersion {
+public class OriginVersionDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Column(name = "NAME", nullable = false, unique = true)
 	private String name;
-	@Column(name = "DESCRIPTION")
 	private String description;
+
+	private OriginDto origin;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORIGIN_ID", referencedColumnName = "ID", nullable = false)
-	@NotNull
-	private Origin origin;
-	
-	@CreationTimestamp
-	@Column(name = "DATE_CREATED")
 	private Date dateCreated;
 
 	public Long getId() {
@@ -66,11 +52,11 @@ public class OriginVersion {
 		this.description = description;
 	}
 
-	public Origin getOrigin() {
+	public OriginDto getOrigin() {
 		return origin;
 	}
 
-	public void setOrigin(Origin origin) {
+	public void setOrigin(OriginDto origin) {
 		this.origin = origin;
 	}
 
