@@ -3,7 +3,7 @@ package com.springpj.heroescontentcreator.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springpj.heroescontentcreator.errorhandler.exception.OriginNotFoundException;
+import com.springpj.heroescontentcreator.errorhandler.exception.OriginNotFoundByIdException;
 import com.springpj.heroescontentcreator.mapper.OriginMapper;
 import com.springpj.heroescontentcreator.model.Origin;
 import com.springpj.heroescontentcreator.model.dto.OriginDto;
@@ -38,7 +38,7 @@ public class OriginServiceImpl implements OriginService {
 	@Override
 	public OriginDto findById(Long id) {
 		Origin origin = originRepository.findById(id)
-				.orElseThrow(() -> new OriginNotFoundException(id));
+				.orElseThrow(() -> new OriginNotFoundByIdException(id));
 		return originMapper.toDto(origin);
 	}
 	

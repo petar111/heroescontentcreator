@@ -2,12 +2,18 @@ package com.springpj.heroescontentcreator.model.dto;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class OriginDto {
 
 	private Long id;
 
 
+	@Size(max = 255, message = "Maximum name size is 255.")
+	@NotBlank(message = "Name must not be blank.")
 	private String name;
+	@Size(max = 255, message = "Maximum description size is 255.")
 	private String description;
 	
 	private Date dateCreated;

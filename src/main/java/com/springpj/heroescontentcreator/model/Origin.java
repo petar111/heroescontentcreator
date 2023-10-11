@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ORIGIN")
@@ -21,9 +22,11 @@ public class Origin {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
+	@Size(max = 255, message = "Maximum name size is 255.")
+	@NotBlank(message = "Name must not be blank.")
 	@Column(name = "NAME", nullable = false, unique = true)
 	private String name;
+	@Size(max = 255, message = "Maximum description size is 255.")
 	@Column(name = "DESCRIPTION")
 	private String description;
 	

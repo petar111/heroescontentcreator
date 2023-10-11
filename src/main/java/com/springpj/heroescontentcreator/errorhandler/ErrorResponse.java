@@ -6,6 +6,7 @@ public class ErrorResponse {
 	
 	private final HttpStatus status;
 	private final String message;
+	private final String detailedMessage;
 	private final String stackTrace;
 	
 	
@@ -13,6 +14,7 @@ public class ErrorResponse {
 	private ErrorResponse(ErrorResponseBuilder builder) {
 		this.status = builder.status;
 		this.message = builder.message;
+		this.detailedMessage = builder.detailedMessage;
 		this.stackTrace = builder.stackTrace;
 	}
 	
@@ -21,6 +23,9 @@ public class ErrorResponse {
 	}
 	public String getMessage() {
 		return message;
+	}
+	public String getDetailedMessage() {
+		return this.detailedMessage;
 	}
 	public String getStackTrace() {
 		return stackTrace;
@@ -34,6 +39,7 @@ public class ErrorResponse {
 		
 		private HttpStatus status;
 		private String message;
+		private String detailedMessage;
 		private String stackTrace;
 		
 		public ErrorResponseBuilder withStatus(HttpStatus status) {
@@ -43,6 +49,11 @@ public class ErrorResponse {
 		
 		public ErrorResponseBuilder withMessage(String message) {
 			this.message = message;
+			return this;
+		}
+		
+		public ErrorResponseBuilder withDetailedMessage(String detailedMessage) {
+			this.detailedMessage = detailedMessage;
 			return this;
 		}
 		
