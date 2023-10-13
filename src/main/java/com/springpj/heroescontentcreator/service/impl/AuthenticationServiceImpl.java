@@ -11,6 +11,7 @@ import com.springpj.heroescontentcreator.mapper.UserMapper;
 import com.springpj.heroescontentcreator.model.dto.LoginRequestDto;
 import com.springpj.heroescontentcreator.model.dto.RegisterRequestDto;
 import com.springpj.heroescontentcreator.model.dto.UserDto;
+import com.springpj.heroescontentcreator.model.user.AccountStatus;
 import com.springpj.heroescontentcreator.model.user.User;
 import com.springpj.heroescontentcreator.repository.UserRepository;
 import com.springpj.heroescontentcreator.security.user.UserPrincipal;
@@ -65,6 +66,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private User prepareUserForRegistration(RegisterRequestDto registerRequestDto) {
 		User result = userMapper.toEntity(registerRequestDto);
 		result.setPassword(passwordEncoder.encode(result.getPassword()));
+		result.setAccountStatus(AccountStatus.ACTIVE);
+		result.setCredentialsExpired(false);
 
 		return result;
 	}
