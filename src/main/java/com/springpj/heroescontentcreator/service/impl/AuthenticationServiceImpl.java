@@ -15,21 +15,18 @@ import com.springpj.heroescontentcreator.model.user.User;
 import com.springpj.heroescontentcreator.repository.UserRepository;
 import com.springpj.heroescontentcreator.security.user.UserPrincipal;
 import com.springpj.heroescontentcreator.service.AuthenticationService;
-import com.springpj.heroescontentcreator.service.UserService;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private final AuthenticationManager authenticationManager;
 	private final UserRepository userRepository;
-	private final UserService userService;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
 
-	public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserService userService,
-			UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+	public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
+			UserMapper userMapper, PasswordEncoder passwordEncoder) {
 		this.authenticationManager = authenticationManager;
-		this.userService = userService;
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;

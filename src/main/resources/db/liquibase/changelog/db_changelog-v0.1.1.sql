@@ -42,3 +42,15 @@ alter table if exists origin_version
     CONSTRAINT _user_pkey PRIMARY KEY (id),
     CONSTRAINT _user_username_key UNIQUE (username)
 )
+
+--changeset petar:5
+alter table _user add column account_status smallint not null;
+alter table _user add constraint _account_statusfrom0to3 check (account_status between 0 and 3);
+
+alter table _user add column credentials_expired boolean not null;
+
+alter table _user add constraint _email_unique UNIQUE (email);
+alter table _user add constraint _backup_email_unique UNIQUE (backup_email);
+
+
+

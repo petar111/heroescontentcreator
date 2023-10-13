@@ -6,6 +6,7 @@ import com.springpj.heroescontentcreator.model.user.AccountStatus;
 import com.springpj.heroescontentcreator.model.validation.ValidEmail;
 import com.springpj.heroescontentcreator.model.validation.ValidPassword;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserDto {
@@ -13,10 +14,12 @@ public class UserDto {
 	private Long id;
 	
 	@Size(max = 50, message = "Maximum username size is 50.")
+	@NotNull
 	private String username;
 	
 	@Size(max = 100, message = "Maximum email size is 100.")
 	@ValidEmail
+	@NotNull
 	private String email;
 	
 	@Size(max = 100, message = "Maximum email size is 100.")
