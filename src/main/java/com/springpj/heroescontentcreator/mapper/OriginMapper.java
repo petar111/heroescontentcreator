@@ -5,8 +5,8 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.springpj.heroescontentcreator.model.Origin;
 import com.springpj.heroescontentcreator.model.dto.OriginDto;
+import com.springpj.heroescontentcreator.model.origin.Origin;
 import com.springpj.heroescontentcreator.model.version.OriginVersion;
 
 @Mapper(componentModel = "spring")

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.springpj.heroescontentcreator.model.Origin;
+import com.springpj.heroescontentcreator.model.origin.Origin;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
