@@ -23,11 +23,9 @@ create table authority (
         resource_id bigint not null,
         access_type_id bigint not null,
         primary key (id),
-        foreign key (resource_id) references resource (id),
-        foreign key (access_type_id) references access_type (id)
+        foreign key (resource_id) references resource (id) on delete cascade,
+        foreign key (access_type_id) references access_type (id) on delete cascade
 );
-
-
 
 create table _role (
         id bigserial not null,
@@ -41,8 +39,8 @@ create table role_authority(
         role_id bigint not null,
         authority_id bigint not null,
         primary key (id),
-        foreign key (role_id) references role (id),
-        foreign key (authority_id) references authority (id)
+        foreign key (role_id) references role (id) on delete cascade,
+        foreign key (authority_id) references authority (id) on delete cascade
 );
 
 
@@ -87,12 +85,6 @@ CREATE TRIGGER insert_authority_on_access_type_insert
      AFTER INSERT ON access_type
      FOR EACH ROW EXECUTE PROCEDURE f_update_authority_on_access_type_insert();
 
-insert into _role (name, description) values ('ADMIN', 'User with the higest priviledges in the system. Can manage every resource in the system.');
-insert into _role (name, description) values ('SYSTEM_MODERATOR', 'User who can manage every system-related resource in the system. (Users, System parameters etc.)');
-insert into _role (name, description) values ('CONTENT_MODERATOR', 'User who can manage every resource related to the concrete data. (Origin, Hero, Battle etc.)');
-insert into _role (name, description) values ('CONTENT_CREATOR', 'User who can see and create only its own data related to the game.');
-
-
 CREATE OR REPLACE FUNCTION f_insert_into_role_authority_after_authority_insert ()
 RETURNS trigger AS
 $$
@@ -131,7 +123,10 @@ CREATE TRIGGER insert_into_role_authority_after_authority_insert
      AFTER INSERT ON authority
      FOR EACH ROW EXECUTE PROCEDURE f_insert_into_role_authority_after_authority_insert();
 
-
+insert into _role (name, description) values ('ADMIN', 'User with the higest priviledges in the system. Can manage every resource in the system.');
+insert into _role (name, description) values ('SYSTEM_MODERATOR', 'User who can manage every system-related resource in the system. (Users, System parameters etc.)');
+insert into _role (name, description) values ('CONTENT_MODERATOR', 'User who can manage every resource related to the concrete data. (Origin, Hero, Battle etc.)');
+insert into _role (name, description) values ('CONTENT_CREATOR', 'User who can see and create only its own data related to the game.');
 
 insert into resource(id, name, description, _type) values (1, 'ORIGIN', '', 'BUSINESS');
 insert into resource(id, name, description, _type) values (2, 'USER', '', 'SYSTEM');
@@ -139,3 +134,8 @@ insert into resource(id, name, description, _type) values (2, 'USER', '', 'SYSTE
 insert into access_type(id, name, description) values (1, 'MANAGE_ONLY_OWN', 'User has permission on CRUD operations only on the resources that he created.');
 insert into access_type(id, name, description) values (2, 'READ_ONLY', 'User has permission to retrieve all other resources.');
 insert into access_type(id, name, description) values (3, 'MANAGE_ALL', 'User has permission on CRUD operations on all resources in the system.');
+
+alter table _user add column role_id bigint;
+update _user set role_id = (SELECT id from _role where name = 'CONTENT_CREATOR');
+
+alter table _user add constraint user_role_fk foreign key (role_id) references role (id);

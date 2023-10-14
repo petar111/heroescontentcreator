@@ -17,6 +17,8 @@ public class Resource {
 	@Column(name = "DESCRIPTION")
 	private String description;
 	
+	@Column(name = "_TYPE", nullable = false, unique = true)
+	private ResourceType resourceType;
 	
 	public Long getId() {
 		return id;
@@ -36,6 +38,13 @@ public class Resource {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public ResourceType getResourceType() {
+		return resourceType;
+	}
+	public void setResourceType(ResourceType resourceType) {
+		this.resourceType = resourceType;
+	}
+	
 	
 	
 	
