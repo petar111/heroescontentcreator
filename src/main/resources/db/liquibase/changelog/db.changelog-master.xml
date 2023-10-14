@@ -7,6 +7,6 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include  file="db/liquibase/changelog/db_changelog-v0.1.1.sql"/>
-
+    <include  file="db/liquibase/changelog/db_permissions-changelog-v0.1.1.sql"/>
 
 </databaseChangeLog>

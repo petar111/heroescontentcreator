@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.springpj.heroescontentcreator.errorhandler.ErrorResponse.ErrorResponseBuilder;
+import com.springpj.heroescontentcreator.errorhandler.exception.AuthenticationFailedException;
 import com.springpj.heroescontentcreator.errorhandler.exception.NotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -37,6 +38,11 @@ public class GlobalExceptionHanlder extends ResponseEntityExceptionHandler{
 				.withMessage(message).build();
 		
 		return ResponseEntity.status(status).body(response);
+	}
+	
+	@ExceptionHandler(AuthenticationFailedException.class)
+	public ResponseEntity<ErrorResponse> handleAuthFailedException(AuthenticationFailedException e, WebRequest request){
+		return composeDefaultErrorResponse(e, HttpStatus.UNAUTHORIZED);
 	}
 	
 	

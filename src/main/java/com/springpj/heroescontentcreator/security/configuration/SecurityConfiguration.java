@@ -1,5 +1,8 @@
 package com.springpj.heroescontentcreator.security.configuration;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.springpj.heroescontentcreator.model.authorization.AccessType;
+import com.springpj.heroescontentcreator.model.authorization.Authority;
+import com.springpj.heroescontentcreator.model.authorization.Resource;
+import com.springpj.heroescontentcreator.repository.AccessTypeRepository;
+import com.springpj.heroescontentcreator.repository.ResourceRepository;
+import com.springpj.heroescontentcreator.security.authorization.AuthorizationProvider;
 import com.springpj.heroescontentcreator.security.jwt.JwtAccessDeniedHandler;
 import com.springpj.heroescontentcreator.security.jwt.JwtAuthenticationEntryPoint;
 import com.springpj.heroescontentcreator.security.jwt.JwtAuthorizationFilter;
@@ -31,13 +40,13 @@ public class SecurityConfiguration {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-
     @Autowired
     public SecurityConfiguration(
             @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
             JwtAuthorizationFilter jwtAuthorizationFilter,
             JwtAccessDeniedHandler jwtAccessDeniedHandler,
-            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
+            ) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
@@ -76,4 +85,5 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+    
 }
