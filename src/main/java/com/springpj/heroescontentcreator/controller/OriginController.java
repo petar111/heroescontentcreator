@@ -49,7 +49,7 @@ public class OriginController {
 		
 		Link selfLink = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(this.getClass())
-						.findById(origin.getId())).withRel("_self");
+						.findById(origin.getId())).withRel("self");
 		
 		originModel.add(selfLink);
 		

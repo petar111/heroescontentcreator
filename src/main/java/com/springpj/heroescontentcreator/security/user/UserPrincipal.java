@@ -3,10 +3,12 @@ package com.springpj.heroescontentcreator.security.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.springpj.heroescontentcreator.model.authorization.DatabaseGrantedAuthority;
 import com.springpj.heroescontentcreator.model.user.User;
+import com.springpj.heroescontentcreator.security.authorization.AuthorizationContext;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
     private static final long serialVersionUID = 4889114430550460076L;
@@ -18,7 +20,12 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<>();
+    	
+        return user.getRole().getAuthorities()
+        		.stream()
+        			.map(a -> AuthorizationContext.INSTANCE.provideAuthorityString(a.getResourceId(), a.getAccessTypeId()))
+        			.map(DatabaseGrantedAuthority::new)
+        			.collect(Collectors.toSet());
     }
 
     @Override
@@ -49,5 +56,5 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getAccountStatus().isActive();
-    }
+    }    
 }

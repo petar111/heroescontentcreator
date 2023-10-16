@@ -20,5 +20,27 @@ public class Authority {
 	private Long resourceId;
 	@Column(name = "ACCESS_TYPE_ID", nullable = false)
 	private Long accessTypeId;
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getResourceId() {
+		return resourceId;
+	}
+	public void setResourceId(Long resourceId) {
+		this.resourceId = resourceId;
+	}
+	public Long getAccessTypeId() {
+		return accessTypeId;
+	}
+	public void setAccessTypeId(Long accessTypeId) {
+		this.accessTypeId = accessTypeId;
+	}
+	
+	
+	
 
 }

@@ -9,12 +9,12 @@ import com.springpj.heroescontentcreator.model.authorization.Resource;
 
 public class DatabaseAuthorizationProvider implements AuthorizationProvider {
 	
-	private final List<Authority> authorities;
+	private final Map<Long, Authority> authorities;
 	private final Map<Long, Resource> resources;
 	private final Map<Long, AccessType> accessTypes;
 	
 	
-	public DatabaseAuthorizationProvider(List<Authority> authorities,
+	public DatabaseAuthorizationProvider(Map<Long, Authority> authorities,
 			Map<Long, Resource> resources,
 			Map<Long, AccessType> accessTypes) {
 		this.authorities = authorities;
@@ -24,7 +24,7 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
 
 
 	@Override
-	public List<Authority> provideAuthorities() {
+	public Map<Long, Authority>  provideAuthorities() {
 		return authorities;
 	}
 

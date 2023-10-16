@@ -37,14 +37,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public UserDto login(LoginRequestDto loginRequestDto) {
 		authenticate(loginRequestDto.getUsername(), loginRequestDto.getPassword());
 		UserDto result = userMapper.toDto(userRepository.findByUsername(loginRequestDto.getUsername())
-				.orElseThrow(() -> new UsernameNotFoundException("")));
+				.orElseThrow(() -> new UsernameNotFoundException(loginRequestDto.getUsername())));
 		return result;
 	}
 
 	@Override
 	public UserPrincipal getUserPrincipal(String username) {
 		return new UserPrincipal(
-				userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("")));
+				userRepository.findByUsername(username)
+					.orElseThrow(() -> new UsernameNotFoundException(username)));
 	}
 
 	@Override

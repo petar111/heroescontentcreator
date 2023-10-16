@@ -2,16 +2,16 @@
 
 --changeset permissions_petar:1
 create table resource (
-        id bigint not null,
+        id bigserial not null,
         description varchar(255),
         name varchar(255) not null unique,
-        _type varchar(50) not null,
+        _type smallint not null,
         primary key (id),
-        constraint _type_constraint check (_type in ('SYSTEM', 'BUSINESS'))
+        constraint _type_constraint check (_type between 0 and 1)
 );
 
 create table access_type (
-        id bigint not null,
+        id bigserial not null,
         description varchar(255),
         name varchar(255) not null unique,
         primary key (id)
@@ -39,55 +39,56 @@ create table role_authority(
         role_id bigint not null,
         authority_id bigint not null,
         primary key (id),
-        foreign key (role_id) references role (id) on delete cascade,
+        foreign key (role_id) references _role (id) on delete cascade,
         foreign key (authority_id) references authority (id) on delete cascade
 );
 
-
+--changeset permissions_petar:1.1 splitStatements:false
 CREATE OR REPLACE FUNCTION f_update_authority_on_resource_insert ()
 RETURNS trigger AS
-$$
+$BODY$
      DECLARE
  		access_types record;
      BEGIN
-        for access_types in select *
-	       from access_type
+        for access_types in select * from access_type
 	    loop 
-			insert into authority(resource_id, access_type_id) values (NEW.id, access_type.id);
+			insert into authority(resource_id, access_type_id) values (NEW.id, access_types.id);
 	    end loop;
 	    
           RETURN NEW;
      END;
-$$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE 'plpgsql';
 
+--changeset permissions_petar:1.1.1
 CREATE TRIGGER insert_authority_on_resource_insert
      AFTER INSERT ON resource
      FOR EACH ROW EXECUTE PROCEDURE f_update_authority_on_resource_insert();
      
-
+--changeset permissions_petar:1.2 splitStatements:false
 CREATE OR REPLACE FUNCTION f_update_authority_on_access_type_insert ()
 RETURNS trigger AS
-$$
+$BODY$
      DECLARE
  		resources record;
      BEGIN
-        for resources in select *
-	       from resource
+        for resources in select * from resource
 	    loop 
 			insert into authority(resource_id, access_type_id) values (resources.id, NEW.id);
 	    end loop;
 	    
           RETURN NEW;
      END;
-$$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE 'plpgsql';
 
+--changeset permissions_petar:1.2.1
 CREATE TRIGGER insert_authority_on_access_type_insert
      AFTER INSERT ON access_type
      FOR EACH ROW EXECUTE PROCEDURE f_update_authority_on_access_type_insert();
 
+--changeset permissions_petar:1.3 splitStatements:false
 CREATE OR REPLACE FUNCTION f_insert_into_role_authority_after_authority_insert ()
 RETURNS trigger AS
-$$
+$BODY$
      DECLARE
  		authority_resource record;
  		authority_access_type record;
@@ -105,10 +106,10 @@ $$
         select * into authority_access_type from access_type where id = NEW.access_type_id;
         
         insert into role_authority(role_id, authority_id) values (_admin.id, NEW.id);
-        if authority_resource._type = 'SYSTEM' then
+        if authority_resource._type = 0 then
 			insert into role_authority(role_id, authority_id) values (system_moderator.id, NEW.id);
 		end if;
-		if authority_resource._type = 'BUSINESS' then
+		if authority_resource._type = 1 then
 			insert into role_authority(role_id, authority_id) values (content_moderator.id, NEW.id);
 		end if;
 		if authority_access_type.name = 'MANAGE_ONLY_OWN' then
@@ -117,25 +118,26 @@ $$
         
           RETURN NEW;
      END;
-$$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE 'plpgsql';
 
+--changeset permissions_petar:1.3.1
 CREATE TRIGGER insert_into_role_authority_after_authority_insert
      AFTER INSERT ON authority
      FOR EACH ROW EXECUTE PROCEDURE f_insert_into_role_authority_after_authority_insert();
 
+--changeset permissions_petar:1.4
+alter table _user add column role_id bigint not null;
+alter table _user add constraint user_role_fk foreign key (role_id) references _role (id);
+     
 insert into _role (name, description) values ('ADMIN', 'User with the higest priviledges in the system. Can manage every resource in the system.');
 insert into _role (name, description) values ('SYSTEM_MODERATOR', 'User who can manage every system-related resource in the system. (Users, System parameters etc.)');
 insert into _role (name, description) values ('CONTENT_MODERATOR', 'User who can manage every resource related to the concrete data. (Origin, Hero, Battle etc.)');
 insert into _role (name, description) values ('CONTENT_CREATOR', 'User who can see and create only its own data related to the game.');
 
-insert into resource(id, name, description, _type) values (1, 'ORIGIN', '', 'BUSINESS');
-insert into resource(id, name, description, _type) values (2, 'USER', '', 'SYSTEM');
+insert into resource(name, description, _type) values ('ORIGIN', '', 1);
+insert into resource(name, description, _type) values ('USER', '', 0);
+insert into resource(name, description, _type) values ('DOCUMENTATION', '', 0);
 
-insert into access_type(id, name, description) values (1, 'MANAGE_ONLY_OWN', 'User has permission on CRUD operations only on the resources that he created.');
-insert into access_type(id, name, description) values (2, 'READ_ONLY', 'User has permission to retrieve all other resources.');
-insert into access_type(id, name, description) values (3, 'MANAGE_ALL', 'User has permission on CRUD operations on all resources in the system.');
-
-alter table _user add column role_id bigint;
-update _user set role_id = (SELECT id from _role where name = 'CONTENT_CREATOR');
-
-alter table _user add constraint user_role_fk foreign key (role_id) references role (id);
+insert into access_type(name, description) values ('MANAGE_ONLY_OWN', 'User has permission on CRUD operations only on the resources that he created.');
+insert into access_type(name, description) values ('READ_ONLY', 'User has permission to retrieve all other resources.');
+insert into access_type(name, description) values ('MANAGE_ALL', 'User has permission on CRUD operations on all resources in the system.');
