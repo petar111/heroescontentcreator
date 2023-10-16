@@ -11,17 +11,17 @@ public class RegisterRequestDto {
 	
 	@Size(max = 100, message = "Maximum email size is 100.")
 	@ValidEmail
-	@NotNull
+	@NotNull(message = "Email is required.")
     private String email;
 	@Size(max = 100, message = "Maximum email size is 100.")
 	@ValidEmail
     private String backupEmail;
     
     @Size(max = 50, message = "Maximum username size is 50.")
-    @NotNull
+    @NotNull(message = "Username is required.")
     private String username;
     @ValidPassword
-    @NotNull
+    @NotNull(message = "Password is required.")
     private String password;
 
 

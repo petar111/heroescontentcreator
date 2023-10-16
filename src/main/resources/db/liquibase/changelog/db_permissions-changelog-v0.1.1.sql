@@ -141,3 +141,9 @@ insert into resource(name, description, _type) values ('DOCUMENTATION', '', 0);
 insert into access_type(name, description) values ('MANAGE_ONLY_OWN', 'User has permission on CRUD operations only on the resources that he created.');
 insert into access_type(name, description) values ('READ_ONLY', 'User has permission to retrieve all other resources.');
 insert into access_type(name, description) values ('MANAGE_ALL', 'User has permission on CRUD operations on all resources in the system.');
+
+--changeset permissions_petar:1.5
+insert into _user (username, password, email, backup_email, account_status, credentials_expired, role_id, date_created)
+			values('admin', '{bcrypt}$2a$10$qFMfYsTSvrYxmPtRb8D08urf2s8QTrTau2UjD1F9fu02Phr6qJ2Le', 'admin132312123123@gmail.com', 'admin432423r342@gmail.com', 0, false, (select id from _role where name='ADMIN'),'1990-10-16 17:00:12.659');
+
+

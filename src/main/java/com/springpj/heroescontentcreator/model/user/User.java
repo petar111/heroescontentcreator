@@ -62,7 +62,7 @@ public class User {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", nullable = false)
-	@NotNull
+	@NotNull(message = "Role is required.")
 	private Role role;
 	
 	public Long getId() {

@@ -6,13 +6,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.springpj.heroescontentcreator.errorhandler.exception.RoleNotFoundByNameException;
 import com.springpj.heroescontentcreator.errorhandler.exception.UserAlreadyExistsException;
 import com.springpj.heroescontentcreator.mapper.UserMapper;
+import com.springpj.heroescontentcreator.model.authorization.EmbededRole;
+import com.springpj.heroescontentcreator.model.authorization.Role;
 import com.springpj.heroescontentcreator.model.dto.LoginRequestDto;
 import com.springpj.heroescontentcreator.model.dto.RegisterRequestDto;
 import com.springpj.heroescontentcreator.model.dto.UserDto;
 import com.springpj.heroescontentcreator.model.user.AccountStatus;
 import com.springpj.heroescontentcreator.model.user.User;
+import com.springpj.heroescontentcreator.repository.RoleRepository;
 import com.springpj.heroescontentcreator.repository.UserRepository;
 import com.springpj.heroescontentcreator.security.user.UserPrincipal;
 import com.springpj.heroescontentcreator.service.AuthenticationService;
@@ -24,13 +28,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
+	private final RoleRepository roleRepository;
 
 	public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
-			UserMapper userMapper, PasswordEncoder passwordEncoder) {
+			UserMapper userMapper, PasswordEncoder passwordEncoder,
+			RoleRepository roleRepository) {
 		this.authenticationManager = authenticationManager;
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
@@ -66,9 +73,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private User prepareUserForRegistration(RegisterRequestDto registerRequestDto) {
 		User result = userMapper.toEntity(registerRequestDto);
+		
+		Role contentCreatorRole = roleRepository.findByName(EmbededRole.CONTENT_CREATOR.name()).
+				orElseThrow(() -> new RoleNotFoundByNameException(EmbededRole.CONTENT_CREATOR.name()));
+		
 		result.setPassword(passwordEncoder.encode(result.getPassword()));
 		result.setAccountStatus(AccountStatus.ACTIVE);
 		result.setCredentialsExpired(false);
+		result.setRole(contentCreatorRole);
 
 		return result;
 	}
