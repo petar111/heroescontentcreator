@@ -3,11 +3,15 @@ package com.springpj.heroescontentcreator.model.version;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.springpj.heroescontentcreator.model.origin.Origin;
+import com.springpj.heroescontentcreator.model.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "ORIGIN_VERSION")
 @org.hibernate.annotations.Immutable
 public class OriginVersion {
@@ -41,6 +46,10 @@ public class OriginVersion {
 	@CreationTimestamp
 	@Column(name = "DATE_CREATED")
 	private Date dateCreated;
+
+	@CreatedBy
+	@Column(name = "CREATED_BY_ID")
+	private Long createdById;
 
 	public Long getId() {
 		return id;
@@ -80,6 +89,14 @@ public class OriginVersion {
 
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public Long getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(Long createdById) {
+		this.createdById = createdById;
 	}
 	
 	

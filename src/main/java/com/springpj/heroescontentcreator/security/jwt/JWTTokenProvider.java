@@ -33,7 +33,8 @@ public class JWTTokenProvider {
                 .withIssuer(SecurityConstants.JWT_ISSUER)
                 .withAudience(SecurityConstants.JWT_AUDIENCE)
                 .withIssuedAt(new Date())
-                .withSubject(userPrincipal.getUsername())
+                .withSubject(userPrincipal.getUsername() + SecurityConstants.JWT_SUBJECT_DELIMITER + userPrincipal.getUser().getId())
+          
                 .withArrayClaim(SecurityConstants.JWT_AUTHORITIES, claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(HMAC512(SecurityConstants.JWT_SECRET_KEY.getBytes()));

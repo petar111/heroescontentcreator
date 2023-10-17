@@ -1,5 +1,7 @@
 package com.springpj.heroescontentcreator.security.jwt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.springpj.heroescontentcreator.security.audit.AuditorFinder;
 import com.springpj.heroescontentcreator.security.constants.SecurityConstants;
 
 import jakarta.servlet.FilterChain;
@@ -22,6 +25,8 @@ import java.util.List;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+	
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
 
     private final JWTTokenProvider jwtTokenProvider;
 
@@ -49,6 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 List<GrantedAuthority> authorities = jwtTokenProvider.getAuthorities(token);
                 Authentication authentication =
                         jwtTokenProvider.getAuthentication(username, authorities, request);
+                
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 SecurityContextHolder.clearContext();

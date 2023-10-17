@@ -13,6 +13,8 @@ public class SecurityConstants {
     public static final String JWT_OPTIONS = "OPTIONS";
     public static final String FORBIDDEN_MESSAGE = "You need to login to access this content.";
     public static final String ACCESS_DENIED_MESSAGE = "You do not have permission to access this content.";
+    
+    public static final String JWT_SUBJECT_DELIMITER = ":";
 
     private SecurityConstants(){
 

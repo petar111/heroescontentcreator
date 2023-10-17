@@ -52,5 +52,13 @@ alter table _user add column credentials_expired boolean not null;
 alter table _user add constraint _email_unique UNIQUE (email);
 alter table _user add constraint _backup_email_unique UNIQUE (backup_email);
 
+--changeset petar:6
+alter table origin_version add column created_by_id bigint;
+alter table origin_version add constraint created_by_fk foreign key (created_by_id) references _user (id) on delete set null;
 
+--changeset petar:6.1
+alter table origin_version drop constraint created_by_fk;
+alter table origin_version drop column created_by_id;
 
+--changeset petar:6.2
+alter table origin_version add column created_by_id bigint;

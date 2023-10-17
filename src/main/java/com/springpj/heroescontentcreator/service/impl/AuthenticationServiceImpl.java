@@ -2,6 +2,7 @@ package com.springpj.heroescontentcreator.service.impl;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final RoleRepository roleRepository;
 
 	public AuthenticationServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
-			UserMapper userMapper, PasswordEncoder passwordEncoder,
-			RoleRepository roleRepository) {
+			UserMapper userMapper, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
 		this.authenticationManager = authenticationManager;
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
@@ -50,8 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public UserPrincipal getUserPrincipal(String username) {
 		return new UserPrincipal(
-				userRepository.findByUsername(username)
-					.orElseThrow(() -> new UsernameNotFoundException(username)));
+				userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username)));
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		User result = userMapper.toEntity(registerRequestDto);
 		Role role = roleRepository.findByName(registerRequestDto.getRoleName())
 				.orElseThrow(() -> new RoleNotFoundByNameException(registerRequestDto.getRoleName()));
-		
+
 		result.setPassword(passwordEncoder.encode(result.getPassword()));
 		result.setAccountStatus(AccountStatus.ACTIVE);
 		result.setCredentialsExpired(false);

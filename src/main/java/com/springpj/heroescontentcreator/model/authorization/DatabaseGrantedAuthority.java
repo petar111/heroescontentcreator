@@ -2,7 +2,6 @@ package com.springpj.heroescontentcreator.model.authorization;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import com.springpj.heroescontentcreator.security.authorization.AuthorizationProvider;
 
 public class DatabaseGrantedAuthority implements GrantedAuthority{
 	
