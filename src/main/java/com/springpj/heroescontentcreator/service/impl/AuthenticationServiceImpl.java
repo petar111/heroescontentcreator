@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.springpj.heroescontentcreator.errorhandler.exception.RoleNotFoundByNameException;
 import com.springpj.heroescontentcreator.errorhandler.exception.UserAlreadyExistsException;
 import com.springpj.heroescontentcreator.mapper.UserMapper;
-import com.springpj.heroescontentcreator.model.authorization.EmbededRole;
 import com.springpj.heroescontentcreator.model.authorization.Role;
 import com.springpj.heroescontentcreator.model.dto.LoginRequestDto;
 import com.springpj.heroescontentcreator.model.dto.RegisterRequestDto;
