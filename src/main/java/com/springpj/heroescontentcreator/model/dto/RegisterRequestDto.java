@@ -23,6 +23,10 @@ public class RegisterRequestDto {
     @ValidPassword
     @NotNull(message = "Password is required.")
     private String password;
+    
+    @Size(max = 50, message = "Maximum role name size is 50.")
+    @NotNull(message = "Role name is required.")
+    private String roleName;
 
 
     public String getEmail() {
@@ -56,6 +60,16 @@ public class RegisterRequestDto {
 	public void setBackupEmail(String backupEmail) {
 		this.backupEmail = backupEmail;
 	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	
+	
     
 
 }

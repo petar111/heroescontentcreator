@@ -73,14 +73,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private User prepareUserForRegistration(RegisterRequestDto registerRequestDto) {
 		User result = userMapper.toEntity(registerRequestDto);
-		
-		Role contentCreatorRole = roleRepository.findByName(EmbededRole.CONTENT_CREATOR.name()).
-				orElseThrow(() -> new RoleNotFoundByNameException(EmbededRole.CONTENT_CREATOR.name()));
+		Role role = roleRepository.findByName(registerRequestDto.getRoleName())
+				.orElseThrow(() -> new RoleNotFoundByNameException(registerRequestDto.getRoleName()));
 		
 		result.setPassword(passwordEncoder.encode(result.getPassword()));
 		result.setAccountStatus(AccountStatus.ACTIVE);
 		result.setCredentialsExpired(false);
-		result.setRole(contentCreatorRole);
+		result.setRole(role);
 
 		return result;
 	}
