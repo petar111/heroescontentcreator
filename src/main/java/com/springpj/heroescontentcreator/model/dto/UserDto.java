@@ -28,7 +28,6 @@ public class UserDto {
 	private String backupEmail;
 
 	@ValidPassword
-	@JsonIgnore
 	private String password;
 	private AccountStatus accountStatus;
 	private boolean credentialsExpired;

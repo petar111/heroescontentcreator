@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.springpj.heroescontentcreator.model.origin.Origin;
-import com.springpj.heroescontentcreator.model.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
